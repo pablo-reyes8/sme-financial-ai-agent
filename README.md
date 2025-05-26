@@ -39,7 +39,12 @@ An AI-driven chatbot built with Flask and LangChain to provide Colombian SMEs wi
 - Extend support to regional tax regimes, export compliance and payroll modules.  
 - Add user authentication and personalized dashboards for multi-user scenarios.
 
+## Contributing
+
+Contributions are welcome! Please open issues or submit pull requests at  
+https://github.com/pablo-reyes8
+
 ## License
 
-MIT © 2025
+This project is licensed under the Apache License 2.0.  
 
