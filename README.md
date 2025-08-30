@@ -1,5 +1,16 @@
 # SME Finance AI Agent
 
+
+![Repo size](https://img.shields.io/github/repo-size/pablo-reyes8/sme-financial-ai-agent)
+![Last commit](https://img.shields.io/github/last-commit/pablo-reyes8/sme-financial-ai-agent)
+![Open issues](https://img.shields.io/github/issues/pablo-reyes8/sme-financial-ai-agent)
+![Contributors](https://img.shields.io/github/contributors/pablo-reyes8/sme-financial-ai-agent)
+![Forks](https://img.shields.io/github/forks/pablo-reyes8/sme-financial-ai-agent?style=social)
+![Stars](https://img.shields.io/github/stars/pablo-reyes8/sme-financial-ai-agent?style=social)
+
+
+
+
 An AI-driven chatbot built with Flask and LangChain to provide Colombian SMEs with practical financial guidance. It ingests live government-published documents (DIAN, MinCIT, CCB), chunks them, embeds with OpenAI, and retrieves threshold-filtered answers on cash flow, taxes, financing and more.
 
 ## Features
