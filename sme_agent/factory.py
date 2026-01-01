@@ -185,6 +185,7 @@ def create_app() -> Flask:
                 session["ui_messages"] = ui_messages
 
         user_count = sum(1 for message in ui_messages if message["sender"] == "user")
+        preferences = list_preferences(app.config["DB"], user_id)[:5]
         return render_template(
             "index.html",
             title=TITLE,
@@ -192,6 +193,7 @@ def create_app() -> Flask:
             messages=ui_messages,
             quick_replies=QUICK_REPLIES,
             user_count=user_count,
+            preferences=preferences,
         )
 
     return app

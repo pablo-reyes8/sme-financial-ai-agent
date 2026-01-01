@@ -6,7 +6,7 @@
   <title>{{ title }}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
 </head>
 <body>
@@ -16,35 +16,68 @@
       <div class="brand-title">{{ title }}</div>
       <div class="brand-subtitle">{{ subtitle }}</div>
     </div>
-    <div class="theme-switch">
+    <div class="actions">
+      <div class="status-pill">Colombia PyME</div>
+      <div class="theme-switch">
       <label class="switch" aria-label="Cambiar tema">
         <input type="checkbox" id="theme-toggle" />
         <span class="slider"></span>
       </label>
+      </div>
     </div>
   </header>
 
   <main class="content" id="content">
-    <section class="history" id="history">
-      {% for msg in messages %}
-        {% if msg.sender == 'bot' %}
-          <div class="message-row bot">
-            <div class="message bubble bot">{{ msg.text | safe }}</div>
-          </div>
-        {% else %}
-          <div class="message-row user">
-            <div class="message bubble user">{{ msg.text }}</div>
-            <div class="avatar" aria-hidden="true">U</div>
-          </div>
-        {% endif %}
-      {% endfor %}
-
-      <div id="typing-indicator" class="message-row bot" aria-live="polite">
-        <div class="message bubble bot">
-          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    <div class="layout">
+      <aside class="side-panel">
+        <div class="panel-card">
+          <div class="panel-title">Personaliza tu asesor</div>
+          <p>Guarda datos del negocio y te respondo con mas contexto.</p>
+          <div class="panel-actions">guardar: sector=alimentos</div>
         </div>
-      </div>
-    </section>
+        <div class="panel-card">
+          <div class="panel-title">Tus datos guardados</div>
+          {% if preferences %}
+            <ul class="pref-list">
+              {% for pref in preferences %}
+                <li><span>{{ pref.key }}</span><strong>{{ pref.value }}</strong></li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p>No hay datos guardados todavia.</p>
+          {% endif %}
+        </div>
+        <div class="panel-card">
+          <div class="panel-title">Atajos utiles</div>
+          <ul class="quick-list">
+            <li>calcular punto de equilibrio</li>
+            <li>flujo de caja mensual</li>
+            <li>margen bruto y neto</li>
+          </ul>
+        </div>
+      </aside>
+
+      <section class="history" id="history">
+        {% for msg in messages %}
+          {% if msg.sender == 'bot' %}
+            <div class="message-row bot" style="--delay: {{ loop.index0 * 0.05 }}s;">
+              <div class="message bubble bot">{{ msg.text | safe }}</div>
+            </div>
+          {% else %}
+            <div class="message-row user" style="--delay: {{ loop.index0 * 0.05 }}s;">
+              <div class="message bubble user">{{ msg.text }}</div>
+              <div class="avatar" aria-hidden="true">U</div>
+            </div>
+          {% endif %}
+        {% endfor %}
+
+        <div id="typing-indicator" class="message-row bot" aria-live="polite">
+          <div class="message bubble bot">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          </div>
+        </div>
+      </section>
+    </div>
   </main>
 
   <footer class="controls">
