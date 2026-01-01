@@ -282,6 +282,12 @@ input:checked + .slider:before {
   background: var(--accent-strong);
 }
 
+.hint {
+  font-size: 0.85rem;
+  color: var(--muted);
+  padding-left: 0.4rem;
+}
+
 #typing-indicator {
   display: none;
 }

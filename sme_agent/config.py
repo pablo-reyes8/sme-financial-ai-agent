@@ -22,6 +22,9 @@ class Settings:
     knowledge_dir: str = os.getenv("KNOWLEDGE_DIR", "sme_agent/knowledge")
     rebuild_vectorstore: bool = os.getenv("REBUILD_VECTORSTORE", "false").lower() == "true"
 
+    database_url: str = os.getenv("DATABASE_URL", "sqlite:///data/app.db")
+    enable_metrics: bool = os.getenv("ENABLE_METRICS", "false").lower() == "true"
+
     enable_web_sources: bool = os.getenv("ENABLE_WEB_SOURCES", "false").lower() == "true"
     retriever_k: int = int(os.getenv("RETRIEVER_K", "4"))
     retriever_score_threshold: float = float(

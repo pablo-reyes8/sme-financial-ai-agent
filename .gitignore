@@ -7,3 +7,4 @@ venv/
 .DS_Store
 
 /data/chroma/
+/data/*.db

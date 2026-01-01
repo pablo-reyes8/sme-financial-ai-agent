@@ -12,7 +12,10 @@ WELCOME_MESSAGES = [
     },
     {
         "sender": "bot",
-        "text": "Si deseas saber mas de mis funciones escribe Informacion.",
+        "text": (
+            "Si deseas saber mas de mis funciones escribe Informacion. "
+            "Tambien puedes guardar datos con: guardar: clave=valor."
+        ),
     },
 ]
 
@@ -37,6 +40,8 @@ Puedo ayudarte a:
 - **Definir estrategias de crecimiento** mediante reinversion, diversificacion o alianzas.
 
 Estoy aqui para resolver tus dudas y proponerte pasos concretos en cada tema. Que aspecto financiero de tu PyME te interesa abordar hoy?
+
+Puedes guardar datos del negocio escribiendo: guardar: clave=valor. Para verlos escribe: mis datos.
 """
 
 SYSTEM_PROMPT = """\

@@ -8,6 +8,7 @@ Chatbot para PyMEs en Colombia con Flask + LangChain. Incluye un modulo de conoc
 - **Recuperacion semantica** con umbral de similitud y ventanas de memoria conversacional.
 - **Prompts profesionales** con protocolo de asesoria y manejo de cortesia.
 - **UI moderna** con modo oscuro, respuestas rapidas y animaciones sutiles.
+- **Persistencia** de conversaciones y preferencias del usuario en SQLite.
 
 ## Estructura del proyecto
 
@@ -53,6 +54,19 @@ flask --app sme_agent.main run
 
 - `ENABLE_WEB_SOURCES=true` para agregar fuentes web (se recomienda rebuild).
 - `REBUILD_VECTORSTORE=true` si cambias los documentos de conocimiento.
+- `DATABASE_URL=sqlite:///data/app.db` para persistir conversaciones y preferencias.
+- `ENABLE_METRICS=true` para exponer `/metrics` con estadisticas basicas.
+
+## Guardar datos del usuario
+
+Puedes guardar datos con mensajes como:
+
+```
+guardar: sector=alimentos
+guardar: ciudad=Bogota
+```
+
+Para verlos, escribe: `mis datos`.
 
 ## Pruebas
 

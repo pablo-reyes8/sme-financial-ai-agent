@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from langchain.memory import ChatMessageHistory, ConversationBufferWindowMemory
 from langchain_core.messages import AIMessage, HumanMessage
@@ -19,9 +19,10 @@ def get_ui_messages(session: Dict) -> List[Dict[str, str]]:
     return session["ui_messages"]
 
 
-def build_memory(session: Dict, k: int) -> ConversationBufferWindowMemory:
+def build_memory(session: Dict, k: int, chat_items: Optional[List[Dict[str, str]]] = None) -> ConversationBufferWindowMemory:
     history = ChatMessageHistory()
-    for item in session.get("chat_history", []):
+    source_items = chat_items if chat_items is not None else session.get("chat_history", [])
+    for item in source_items:
         role = item.get("role")
         content = item.get("content", "")
         if role == "user":
