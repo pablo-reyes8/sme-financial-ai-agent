@@ -23,6 +23,7 @@ from sme_agent.db import (
 )
 from sme_agent.prompts import INFO_MESSAGE, QUICK_REPLIES, SUBTITLE, TITLE
 from sme_agent.services.classification import RESPUESTAS_RAPIDAS, classify_text, normalize_text
+from sme_agent.services.advisor import maybe_handle_calculator
 from sme_agent.services.history import build_memory, get_ui_messages, reset_session_state
 from sme_agent.services.monitoring import LLMMonitor
 from sme_agent.services.preferences import (
@@ -116,56 +117,61 @@ def create_app() -> Flask:
                         save_chat_message(app.config["DB"], user_id, "user", text)
                         raw = INFO_MESSAGE
                     else:
-                        history_items = load_recent_messages(
-                            app.config["DB"], user_id, settings.memory_window * 2
-                        )
-                        save_chat_message(app.config["DB"], user_id, "user", text)
-                        memory = build_memory(
-                            session, settings.memory_window, chat_items=history_items
-                        )
-                        chain = build_chain(settings, app.config["RETRIEVER"], memory)
-                        monitor = LLMMonitor()
-                        start_time = time.monotonic()
-                        status = "ok"
-                        error_message = None
-                        try:
-                            prefs = list_preferences(app.config["DB"], user_id)
-                            preference_context = build_preference_context(prefs)
-                            question_text = text
-                            if preference_context:
-                                question_text = f"{text}\n\n{preference_context}"
-                            if hasattr(chain, "invoke"):
-                                result = chain.invoke(
-                                    {"question": question_text},
-                                    config={"callbacks": [monitor]},
-                                )
-                            else:
-                                result = chain(
-                                    {"question": question_text}, callbacks=[monitor]
-                                )
-                            raw = result["answer"]
-                        except Exception as exc:
-                            status = "error"
-                            error_message = str(exc)
-                            raw = (
-                                "Ocurrio un problema generando la respuesta. "
-                                "Intenta de nuevo o ajusta la pregunta."
+                        calculator_response = maybe_handle_calculator(text)
+                        if calculator_response:
+                            save_chat_message(app.config["DB"], user_id, "user", text)
+                            raw = calculator_response
+                        else:
+                            history_items = load_recent_messages(
+                                app.config["DB"], user_id, settings.memory_window * 2
                             )
-                            logger.exception("Error en llamada a la cadena")
+                            save_chat_message(app.config["DB"], user_id, "user", text)
+                            memory = build_memory(
+                                session, settings.memory_window, chat_items=history_items
+                            )
+                            chain = build_chain(settings, app.config["RETRIEVER"], memory)
+                            monitor = LLMMonitor()
+                            start_time = time.monotonic()
+                            status = "ok"
+                            error_message = None
+                            try:
+                                prefs = list_preferences(app.config["DB"], user_id)
+                                preference_context = build_preference_context(prefs)
+                                question_text = text
+                                if preference_context:
+                                    question_text = f"{text}\n\n{preference_context}"
+                                if hasattr(chain, "invoke"):
+                                    result = chain.invoke(
+                                        {"question": question_text},
+                                        config={"callbacks": [monitor]},
+                                    )
+                                else:
+                                    result = chain(
+                                        {"question": question_text}, callbacks=[monitor]
+                                    )
+                                raw = result["answer"]
+                            except Exception as exc:
+                                status = "error"
+                                error_message = str(exc)
+                                raw = (
+                                    "Ocurrio un problema generando la respuesta. "
+                                    "Intenta de nuevo o ajusta la pregunta."
+                                )
+                                logger.exception("Error en llamada a la cadena")
 
-                        latency_ms = int((time.monotonic() - start_time) * 1000)
-                        usage = monitor.usage
-                        save_llm_call(
-                            app.config["DB"],
-                            user_id,
-                            usage.model or settings.model_name,
-                            latency_ms,
-                            usage.prompt_tokens,
-                            usage.completion_tokens,
-                            usage.total_tokens,
-                            status,
-                            error_message,
-                        )
+                            latency_ms = int((time.monotonic() - start_time) * 1000)
+                            usage = monitor.usage
+                            save_llm_call(
+                                app.config["DB"],
+                                user_id,
+                                usage.model or settings.model_name,
+                                latency_ms,
+                                usage.prompt_tokens,
+                                usage.completion_tokens,
+                                usage.total_tokens,
+                                status,
+                                error_message,
+                            )
 
                 raw = raw.replace("\\(", "(").replace("\\)", ")")
                 html = markdown(raw, extensions=["extra"])

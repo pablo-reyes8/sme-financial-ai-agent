@@ -142,12 +142,10 @@ def load_recent_messages(db: Database, user_id: str, limit: int) -> List[dict]:
             .filter(ChatMessage.user_id == user_id)
             .order_by(ChatMessage.created_at.desc())
             .limit(limit)
-            .all()
-        )
+            .all())
     return [
         {"role": row.role, "content": row.content}
-        for row in reversed(rows)
-    ]
+        for row in reversed(rows)]
 
 
 def save_llm_call(
@@ -159,8 +157,7 @@ def save_llm_call(
     completion_tokens: Optional[int],
     total_tokens: Optional[int],
     status: str,
-    error_message: Optional[str],
-) -> None:
+    error_message: Optional[str],) -> None:
     with db.session() as session:
         session.add(
             LLMCall(
@@ -171,9 +168,7 @@ def save_llm_call(
                 completion_tokens=completion_tokens,
                 total_tokens=total_tokens,
                 status=status,
-                error_message=error_message,
-            )
-        )
+                error_message=error_message,))
 
 
 def get_llm_stats(db: Database) -> dict:
@@ -182,10 +177,10 @@ def get_llm_stats(db: Database) -> dict:
         errors = session.query(LLMCall).filter(LLMCall.status == "error").count()
         avg_latency = session.query(func.avg(LLMCall.latency_ms)).scalar() or 0
         avg_tokens = session.query(func.avg(LLMCall.total_tokens)).scalar() or 0
+
     return {
         "total_calls": total,
         "error_calls": errors,
         "error_rate": float(errors) / total if total else 0.0,
         "avg_latency_ms": float(avg_latency),
-        "avg_total_tokens": float(avg_tokens),
-    }
+        "avg_total_tokens": float(avg_tokens)}

@@ -9,6 +9,7 @@ Chatbot para PyMEs en Colombia con Flask + LangChain. Incluye un modulo de conoc
 - **Prompts profesionales** con protocolo de asesoria y manejo de cortesia.
 - **UI moderna** con modo oscuro, respuestas rapidas y animaciones sutiles.
 - **Persistencia** de conversaciones y preferencias del usuario en SQLite.
+- **Calculadoras financieras** basicas para punto de equilibrio, liquidez, margenes y flujo de caja.
 
 ## Estructura del proyecto
 
@@ -67,6 +68,17 @@ guardar: ciudad=Bogota
 ```
 
 Para verlos, escribe: `mis datos`.
+
+## Calculadoras rapidas
+
+Ejemplos de consultas que activan calculos automaticos:
+
+```
+calcular punto de equilibrio: costos fijos 1000000, precio 12000, costo variable 5000
+flujo de caja con ingresos 2000000 y gastos 1500000
+margen bruto con ventas 5000000 y costo de ventas 3000000
+razon corriente con activo corriente 4000000 y pasivo corriente 2500000
+```
 
 ## Pruebas
 
