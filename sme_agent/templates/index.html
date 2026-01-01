@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ title }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+</head>
+<body>
+  <div class="ambient"></div>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-title">{{ title }}</div>
+      <div class="brand-subtitle">{{ subtitle }}</div>
+    </div>
+    <div class="theme-switch">
+      <label class="switch" aria-label="Cambiar tema">
+        <input type="checkbox" id="theme-toggle" />
+        <span class="slider"></span>
+      </label>
+    </div>
+  </header>
+
+  <main class="content" id="content">
+    <section class="history" id="history">
+      {% for msg in messages %}
+        {% if msg.sender == 'bot' %}
+          <div class="message-row bot">
+            <div class="message bubble bot">{{ msg.text | safe }}</div>
+          </div>
+        {% else %}
+          <div class="message-row user">
+            <div class="message bubble user">{{ msg.text }}</div>
+            <div class="avatar" aria-hidden="true">U</div>
+          </div>
+        {% endif %}
+      {% endfor %}
+
+      <div id="typing-indicator" class="message-row bot" aria-live="polite">
+        <div class="message bubble bot">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="controls">
+    {% if user_count < 1 %}
+      <div class="quick-replies">
+        {% for qr in quick_replies %}
+          <button type="button" class="qr-btn">{{ qr }}</button>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <form method="post" class="input-area">
+      <textarea name="user_input" placeholder="Escribe tu consulta..."></textarea>
+      <button type="submit">Enviar</button>
+    </form>
+  </footer>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

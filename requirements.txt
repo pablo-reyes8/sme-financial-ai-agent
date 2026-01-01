@@ -1,0 +1,14 @@
+flask
+python-dotenv
+langchain
+langchain-openai
+langchain-chroma
+langchain-community
+langchain-text-splitters
+openai
+chromadb
+requests
+beautifulsoup4
+markdown
+bleach
+gunicorn
