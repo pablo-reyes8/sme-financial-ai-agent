@@ -1,6 +1,6 @@
 # SME Finance AI Agent
 
-Chatbot para PyMEs en Colombia con Flask + LangChain. Incluye un modulo de conocimiento local, recuperacion semantica con Chroma y un flujo conversacional con respuestas estructuradas.
+Chatbot para PyMEs en Colombia con Flask + LangChain. Incluye un modulo de conocimiento local, recuperacion semantica con Chroma y un flujo conversacional con respuestas estructuradas y eficientes.
 
 ## Caracteristicas
 
